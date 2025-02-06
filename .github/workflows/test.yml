@@ -1,0 +1,25 @@
+name: Run Tests
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          cache: true
+      - name: Install dependencies
+        run: flutter pub get
+      - name: Analyze project source
+        run: dart analyze --fatal-infos
+      - name: Run tests
+        run: flutter test
