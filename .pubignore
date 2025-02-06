@@ -1,0 +1,6 @@
+.dart_tool/
+test/
+example/
+.github/
+build/
+analysis_options.yaml
