@@ -7,5 +7,5 @@ import '_render_stretch_wrap.dart';
 /// Stores flex factor for children wrapped in [Stretch].
 class StretchWrapParentData extends ContainerBoxParentData<RenderBox> {
   /// The flex factor to apply to the child.
-  int? flex;
+  double? flex;
 }
