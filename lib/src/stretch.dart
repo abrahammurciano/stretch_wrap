@@ -12,10 +12,10 @@ import 'stretch_wrap.dart';
 /// Note: Flex distribution occurs independently within each run. The same
 /// flex factor may result in different final widths in different runs.
 class Stretch extends ParentDataWidget<StretchWrapParentData> {
-  const Stretch({super.key, this.flex = 1, required super.child});
+  const Stretch({super.key, this.flex = 1.0, required super.child});
 
   /// The proportion of remaining space the child should receive.
-  final int flex;
+  final double flex;
 
   @override
   void applyParentData(RenderObject renderObject) {
