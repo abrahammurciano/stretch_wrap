@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'examples/alignment_and_auto_stretch_example.dart';
 import 'examples/basic_example.dart';
 import 'examples/mixed_content_example.dart';
 import 'examples/multiple_rows_example.dart';
@@ -62,6 +63,12 @@ class ExamplesScreen extends StatelessWidget {
             title: 'Real-world Example',
             description: 'Tag list with "Add Tag" button, where each tag is stretched so all rows are of equal width',
             child: TagListExample(),
+          ),
+          SizedBox(height: 16),
+          ExampleCard(
+            title: 'Alignment & AutoStretch',
+            description: 'Demonstrates the new alignment and autoStretch parameters',
+            child: AlignmentAndAutoStretchExample(),
           ),
         ],
       ),
