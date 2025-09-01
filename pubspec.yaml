@@ -1,6 +1,6 @@
 name: stretch_wrap
 description: "A Flutter widget that wraps children into multiple rows and stretches designated children to fill the remaining space in each row."
-version: 0.0.1
+version: 0.1.0
 homepage: "https://github.com/abrahammurciano/stretch_wrap"
 
 environment:
