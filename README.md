@@ -5,9 +5,11 @@ A Flutter widget that wraps children into multiple rows and stretches designated
 ## Features
 
 - Wraps widgets into multiple rows, like Flutter's built-in `Wrap`.
-- Stretches designated children within each row to fill remaining space.
+- Stretches designated children or all children within each row to fill remaining space.
 - Supports multiple stretched children in a row with different stretch ratios.
 - Configurable spacing between children and rows.
+- Cross-axis alignment control (start, center, end, stretch) for children within each row.
+- Run alignment options (start, center, end, spaceBetween, spaceAround) for positioning children when there's remaining space.
 
 ## Usage
 
@@ -50,17 +52,52 @@ StretchWrap(
 ### How it works
 
 1. First, children are measured and arranged into rows.
-2. For each row, any remaining space is divided among `Stretch` children.
-3. If a row has multiple `Stretch` children, space is divided according to their `flex` values.
-4. Each `Stretch` child is then resized to its calculated width.
+2. For each row, any remaining space is divided among `Stretch` children, or all children if it is configured to auto-stretch.
+3. If a row has multiple stretched children, space is divided according to their `flex` values.
+4. Each stretched child is then resized to its calculated width.
 
 ## Examples
 
-See the [example](example) folder for a complete sample app:
-- [Basic example](example/lib/examples/basic_example.dart)
-- [Multiple stretch example](example/lib/examples/multiple_stretch_example.dart)
-- [Multiple rows example](example/lib/examples/multiple_rows_example.dart)
-- [Mixed content example](example/lib/examples/mixed_content_example.dart)
-- [Tag list example](example/lib/examples/tag_list_example.dart)
+See the [example](example) folder for a complete sample app.
 
-![Example app](https://raw.githubusercontent.com/abrahammurciano/stretch_wrap/main/example/screenshot.png)
+### Basic Usage
+
+Single stretched child between fixed-width children
+
+![Basic Usage](example/screenshots/basic.png)
+
+### Multiple Stretched Children
+
+Shows how flex values affect space distribution between multiple stretched children in the same row.
+
+![Multiple Stretched Children](example/screenshots/multiple-stretch.png)
+
+### Multiple Rows
+
+Demonstrates wrapping behavior with runSpacing when children exceed the available width.
+
+![Multiple Rows](example/screenshots/multiple-rows.png)
+
+### Mixed Content
+
+Mix of text, buttons, and other widgets showing real-world usage scenarios.
+
+![Mixed Content](example/screenshots/mixed-content.png)
+
+### Real-world Example
+
+Tag list with "Add Tag" button, where each tag is stretched so all rows are of equal width.
+
+![Tag List](example/screenshots/tag-list.png)
+
+### Alignment & AutoStretch
+
+Demonstrates the alignment and autoStretch parameters for controlling how children are positioned and which children are automatically stretched.
+
+![Alignment & AutoStretch](example/screenshots/alignment-and-auto-stretch.png)
+
+### Cross Run Alignment
+
+Shows how children align within each run using crossRunAlignment parameter (start, center, end, stretch).
+
+![Cross Run Alignment](example/screenshots/cross-run-alignment.png)
