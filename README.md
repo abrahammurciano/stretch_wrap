@@ -8,7 +8,7 @@ A Flutter widget that wraps children into multiple rows and stretches designated
 - Stretches designated children or all children within each row to fill remaining space.
 - Supports multiple stretched children in a row with different stretch ratios.
 - Configurable spacing between children and rows.
-- Cross-axis alignment control (start, center, end) for children within each row.
+- Cross-axis alignment control (start, center, end, stretch) for children within each row.
 - Run alignment options (start, center, end, spaceBetween, spaceAround) for positioning children when there's remaining space.
 
 ## Usage
@@ -70,34 +70,34 @@ Single stretched child between fixed-width children
 
 Shows how flex values affect space distribution between multiple stretched children in the same row.
 
-![Multiple Stretched Children](example/screenshots/multiple_stretch.png)
+![Multiple Stretched Children](example/screenshots/multiple-stretch.png)
 
 ### Multiple Rows
 
 Demonstrates wrapping behavior with runSpacing when children exceed the available width.
 
-![Multiple Rows](example/screenshots/multiple_rows.png)
+![Multiple Rows](example/screenshots/multiple-rows.png)
 
 ### Mixed Content
 
 Mix of text, buttons, and other widgets showing real-world usage scenarios.
 
-![Mixed Content](example/screenshots/mixed_content.png)
+![Mixed Content](example/screenshots/mixed-content.png)
 
 ### Real-world Example
 
 Tag list with "Add Tag" button, where each tag is stretched so all rows are of equal width.
 
-![Tag List](example/screenshots/tag_list.png)
+![Tag List](example/screenshots/tag-list.png)
 
 ### Alignment & AutoStretch
 
 Demonstrates the alignment and autoStretch parameters for controlling how children are positioned and which children are automatically stretched.
 
-![Alignment & AutoStretch](example/screenshots/alignment_and_auto_stretch.png)
+![Alignment & AutoStretch](example/screenshots/alignment-and-auto-stretch.png)
 
-### Cross Axis Alignment
+### Cross Run Alignment
 
-Shows how children align within each run using crossAxisAlignment parameter (start, center, end).
+Shows how children align within each run using crossRunAlignment parameter (start, center, end, stretch).
 
-![Cross Axis Alignment](example/screenshots/cross_axis_alignment.png)
+![Cross Run Alignment](example/screenshots/cross-run-alignment.png)

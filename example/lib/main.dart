@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'examples/alignment_and_auto_stretch_example.dart';
 import 'examples/basic_example.dart';
-import 'examples/cross_axis_alignment_example.dart';
+import 'examples/cross_run_alignment_example.dart';
 import 'examples/mixed_content_example.dart';
 import 'examples/multiple_rows_example.dart';
 import 'examples/multiple_stretch_example.dart';
@@ -73,9 +73,9 @@ class ExamplesScreen extends StatelessWidget {
           ),
           SizedBox(height: 16),
           ExampleCard(
-            title: 'Cross Axis Alignment',
-            description: 'Shows how children align within each run using crossAxisAlignment',
-            child: CrossAxisAlignmentExample(),
+            title: 'Cross Run Alignment',
+            description: 'Shows how children align within each run using crossRunAlignment',
+            child: CrossRunAlignmentExample(),
           ),
         ],
       ),

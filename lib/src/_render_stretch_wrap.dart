@@ -6,13 +6,13 @@ import 'package:flutter/rendering.dart'
         Offset,
         PaintingContext,
         RenderBox,
-        RenderBoxContainerDefaultsMixin,
-        WrapCrossAlignment;
+        RenderBoxContainerDefaultsMixin;
 
 import '_run.dart' show Run;
 import '_stretch_wrap_parent_data.dart' show StretchWrapParentData;
 import 'alignment.dart' show RunAlignment;
 import 'auto_stretch.dart' show AutoStretch;
+import 'cross_run_alignment.dart' show CrossRunAlignment;
 
 /// Renders children in multiple runs with flex-based space distribution within each run.
 ///
@@ -34,12 +34,12 @@ class RenderStretchWrap extends RenderBox
     required double spacing,
     required double runSpacing,
     required RunAlignment alignment,
-    required WrapCrossAlignment crossAxisAlignment,
+    required CrossRunAlignment crossRunAlignment,
     required AutoStretch autoStretch,
   })  : _spacing = spacing,
         _runSpacing = runSpacing,
         _alignment = alignment,
-        _crossAxisAlignment = crossAxisAlignment,
+        _crossRunAlignment = crossRunAlignment,
         _autoStretch = autoStretch;
 
   double _spacing;
@@ -66,11 +66,11 @@ class RenderStretchWrap extends RenderBox
     markNeedsLayout();
   }
 
-  WrapCrossAlignment _crossAxisAlignment;
-  WrapCrossAlignment get crossAxisAlignment => _crossAxisAlignment;
-  set crossAxisAlignment(WrapCrossAlignment value) {
-    if (_crossAxisAlignment == value) return;
-    _crossAxisAlignment = value;
+  CrossRunAlignment _crossRunAlignment;
+  CrossRunAlignment get crossRunAlignment => _crossRunAlignment;
+  set crossRunAlignment(CrossRunAlignment value) {
+    if (_crossRunAlignment == value) return;
+    _crossRunAlignment = value;
     markNeedsLayout();
   }
 
@@ -139,6 +139,11 @@ class RenderStretchWrap extends RenderBox
     } else {
       _alignRun(run, y);
     }
+    if (crossRunAlignment == CrossRunAlignment.stretch) {
+      for (final child in run.children) {
+        child.layout(BoxConstraints.tightFor(width: child.size.width, height: run.height), parentUsesSize: true);
+      }
+    }
   }
 
   void _stretchRun(Run run, double y, bool autoStretch) {
@@ -183,10 +188,11 @@ class RenderStretchWrap extends RenderBox
   }
 
   double _crossAxisOffset(RenderBox child, double runHeight) {
-    return switch (crossAxisAlignment) {
-      WrapCrossAlignment.start => 0.0,
-      WrapCrossAlignment.center => (runHeight - child.size.height) / 2,
-      WrapCrossAlignment.end => runHeight - child.size.height,
+    return switch (crossRunAlignment) {
+      CrossRunAlignment.start => 0.0,
+      CrossRunAlignment.center => (runHeight - child.size.height) / 2,
+      CrossRunAlignment.end => runHeight - child.size.height,
+      CrossRunAlignment.stretch => 0.0,
     };
   }
 }

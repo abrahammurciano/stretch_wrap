@@ -1,8 +1,9 @@
-import 'package:flutter/widgets.dart' show BuildContext, MultiChildRenderObjectWidget, Wrap, WrapCrossAlignment;
+import 'package:flutter/widgets.dart' show BuildContext, MultiChildRenderObjectWidget, Wrap;
 
 import '_render_stretch_wrap.dart' show RenderStretchWrap;
 import 'alignment.dart' show RunAlignment;
 import 'auto_stretch.dart' show AutoStretch;
+import 'cross_run_alignment.dart' show CrossRunAlignment;
 
 /// A widget that displays its children in multiple runs (rows) and distributes remaining space
 /// in each run among [Stretch] children according to their flex factors.
@@ -57,7 +58,7 @@ class StretchWrap extends MultiChildRenderObjectWidget {
     this.spacing = 0.0,
     this.runSpacing = 0.0,
     this.alignment = RunAlignment.start,
-    this.crossAxisAlignment = WrapCrossAlignment.center,
+    this.crossRunAlignment = CrossRunAlignment.center,
     this.autoStretch = AutoStretch.explicit,
   });
 
@@ -71,7 +72,7 @@ class StretchWrap extends MultiChildRenderObjectWidget {
   final RunAlignment alignment;
 
   /// How children within a run should be aligned relative to each other in the cross axis.
-  final WrapCrossAlignment crossAxisAlignment;
+  final CrossRunAlignment crossRunAlignment;
 
   /// Which children should automatically be stretched.
   final AutoStretch autoStretch;
@@ -82,7 +83,7 @@ class StretchWrap extends MultiChildRenderObjectWidget {
       spacing: spacing,
       runSpacing: runSpacing,
       alignment: alignment,
-      crossAxisAlignment: crossAxisAlignment,
+      crossRunAlignment: crossRunAlignment,
       autoStretch: autoStretch,
     );
   }
@@ -93,7 +94,7 @@ class StretchWrap extends MultiChildRenderObjectWidget {
       ..spacing = spacing
       ..runSpacing = runSpacing
       ..alignment = alignment
-      ..crossAxisAlignment = crossAxisAlignment
+      ..crossRunAlignment = crossRunAlignment
       ..autoStretch = autoStretch;
   }
 }

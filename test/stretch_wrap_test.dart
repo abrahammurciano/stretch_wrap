@@ -735,14 +735,14 @@ void main() {
       });
     });
 
-    group('crossAxisAlignment', () {
-      testWidgets('centers children within run height when WrapCrossAlignment.center', (tester) async {
+    group('crossRunAlignment', () {
+      testWidgets('centers children within run height when CrossRunAlignment.center', (tester) async {
         await tester.pumpWidget(
           const WrapContainer(
             maxWidth: 500,
             child: StretchWrap(
               spacing: 10,
-              crossAxisAlignment: WrapCrossAlignment.center,
+              crossRunAlignment: CrossRunAlignment.center,
               children: [
                 WrapChild(width: 100, height: 30),
                 WrapChild(width: 100, height: 50),
@@ -759,13 +759,13 @@ void main() {
         expect(tester.getTopLeft(items.at(2)), const Offset(220, 15));
       });
 
-      testWidgets('aligns children to start when WrapCrossAlignment.start', (tester) async {
+      testWidgets('aligns children to start when CrossRunAlignment.start', (tester) async {
         await tester.pumpWidget(
           const WrapContainer(
             maxWidth: 500,
             child: StretchWrap(
               spacing: 10,
-              crossAxisAlignment: WrapCrossAlignment.start,
+              crossRunAlignment: CrossRunAlignment.start,
               children: [
                 WrapChild(width: 100, height: 30),
                 WrapChild(width: 100, height: 50),
@@ -782,13 +782,13 @@ void main() {
         expect(tester.getTopLeft(items.at(2)), const Offset(220, 0));
       });
 
-      testWidgets('aligns children to end when WrapCrossAlignment.end', (tester) async {
+      testWidgets('aligns children to end when CrossRunAlignment.end', (tester) async {
         await tester.pumpWidget(
           const WrapContainer(
             maxWidth: 500,
             child: StretchWrap(
               spacing: 10,
-              crossAxisAlignment: WrapCrossAlignment.end,
+              crossRunAlignment: CrossRunAlignment.end,
               children: [
                 WrapChild(width: 100, height: 30),
                 WrapChild(width: 100, height: 50),
@@ -812,7 +812,7 @@ void main() {
             child: StretchWrap(
               spacing: 10,
               runSpacing: 15,
-              crossAxisAlignment: WrapCrossAlignment.center,
+              crossRunAlignment: CrossRunAlignment.center,
               children: [
                 WrapChild(width: 100, height: 40),
                 WrapChild(width: 100, height: 60),
@@ -837,7 +837,7 @@ void main() {
             maxWidth: 500,
             child: StretchWrap(
               spacing: 10,
-              crossAxisAlignment: WrapCrossAlignment.center,
+              crossRunAlignment: CrossRunAlignment.center,
               children: [
                 WrapChild(width: 100, height: 30),
                 Stretch(child: WrapChild(width: 0, height: 50)),
@@ -855,13 +855,13 @@ void main() {
         expect(tester.getTopLeft(items.at(2)), const Offset(400, 15));
       });
 
-      testWidgets('applies crossAxisAlignment with FlexHeightChild', (tester) async {
+      testWidgets('applies crossRunAlignment with FlexHeightChild', (tester) async {
         await tester.pumpWidget(
           const WrapContainer(
             maxWidth: 500,
             child: StretchWrap(
               spacing: 10,
-              crossAxisAlignment: WrapCrossAlignment.end,
+              crossRunAlignment: CrossRunAlignment.end,
               children: [
                 FlexHeightChild(
                   desiredWidth: 100,
