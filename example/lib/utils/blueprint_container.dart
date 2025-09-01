@@ -7,13 +7,15 @@ class BlueprintContainer extends StatelessWidget {
   final double width;
   final Widget child;
   final Color borderColor;
+  final double borderWidth;
   final Color indicatorColor;
 
   const BlueprintContainer({
     super.key,
     required this.width,
     required this.child,
-    this.borderColor = Colors.grey,
+    this.borderColor = Colors.blue,
+    this.borderWidth = 2.0,
     this.indicatorColor = Colors.blue,
   });
 
@@ -22,139 +24,47 @@ class BlueprintContainer extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildWidthIndicator(),
-        const SizedBox(height: 8),
-        Container(
-          width: width,
-          decoration: BoxDecoration(
-            border: Border.all(color: borderColor),
+        SizeMarker(width: width, color: borderColor, thickness: borderWidth),
+        DecoratedBox(
+          decoration: BoxDecoration(border: Border.all(color: borderColor, width: borderWidth)),
+          child: SizedBox(
+            width: width + (borderWidth * 2),
+            child: Padding(padding: EdgeInsets.all(borderWidth), child: child),
           ),
-          child: child,
         ),
       ],
     );
   }
-
-  Widget _buildWidthIndicator() {
-    return SizedBox(
-      width: width,
-      height: 24,
-      child: CustomPaint(
-        painter: _WidthIndicatorPainter(
-          width: width,
-          color: indicatorColor,
-        ),
-      ),
-    );
-  }
 }
 
-class _WidthIndicatorPainter extends CustomPainter {
+class SizeMarker extends StatelessWidget {
   final double width;
   final Color color;
+  final double thickness;
+  final double endHeight;
 
-  _WidthIndicatorPainter({
+  const SizeMarker({
     required this.width,
-    required this.color,
+    this.color = Colors.blue,
+    this.thickness = 2.0,
+    this.endHeight = 8.0,
+    super.key,
   });
 
   @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = color
-      ..strokeWidth = 1.0
-      ..style = PaintingStyle.stroke;
-
-    final textPainter = TextPainter(
-      text: TextSpan(
-        text: '${width.toInt()}px',
-        style: TextStyle(
-          color: color,
-          fontSize: 12,
-          fontWeight: FontWeight.bold,
-        ),
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: width + (thickness * 2),
+      height: 24,
+      child: Row(
+        children: [
+          Container(width: thickness, height: endHeight, color: color),
+          Expanded(child: Container(height: thickness, color: color)),
+          Text(" ${width.toInt()}px ", style: TextStyle(color: color, fontWeight: FontWeight.bold)),
+          Expanded(child: Container(height: thickness, color: color)),
+          Container(width: thickness, height: endHeight, color: color),
+        ],
       ),
-      textDirection: TextDirection.ltr,
     );
-    textPainter.layout();
-
-    // Calculate positions
-    final lineY = size.height / 2;
-    final textWidth = textPainter.width;
-    final textHeight = textPainter.height;
-    final textX = (size.width - textWidth) / 2;
-    final textY = (size.height - textHeight) / 2;
-
-    // Draw left line (from start to text)
-    final leftLineEnd = textX - 4;
-    if (leftLineEnd > 0) {
-      canvas.drawLine(
-        Offset(0, lineY),
-        Offset(leftLineEnd, lineY),
-        paint,
-      );
-
-      // Left arrow
-      _drawArrowHead(canvas, paint, Offset(0, lineY), true);
-    }
-
-    // Draw right line (from text to end)
-    final rightLineStart = textX + textWidth + 4;
-    if (rightLineStart < size.width) {
-      canvas.drawLine(
-        Offset(rightLineStart, lineY),
-        Offset(size.width, lineY),
-        paint,
-      );
-
-      // Right arrow
-      _drawArrowHead(canvas, paint, Offset(size.width, lineY), false);
-    }
-
-    // Draw text with background
-    final textRect = Rect.fromLTWH(textX - 2, textY, textWidth + 4, textHeight);
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(textRect, const Radius.circular(2)),
-      Paint()
-        ..color = Colors.white
-        ..style = PaintingStyle.fill,
-    );
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(textRect, const Radius.circular(2)),
-      Paint()
-        ..color = color
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 1.0,
-    );
-
-    textPainter.paint(canvas, Offset(textX, textY));
-  }
-
-  void _drawArrowHead(Canvas canvas, Paint paint, Offset position, bool pointsRight) {
-    const arrowSize = 4.0;
-    final path = Path();
-
-    if (pointsRight) {
-      path.moveTo(position.dx, position.dy);
-      path.lineTo(position.dx + arrowSize, position.dy - arrowSize / 2);
-      path.lineTo(position.dx + arrowSize, position.dy + arrowSize / 2);
-      path.close();
-    } else {
-      path.moveTo(position.dx, position.dy);
-      path.lineTo(position.dx - arrowSize, position.dy - arrowSize / 2);
-      path.lineTo(position.dx - arrowSize, position.dy + arrowSize / 2);
-      path.close();
-    }
-
-    canvas.drawPath(
-        path,
-        Paint()
-          ..color = color
-          ..style = PaintingStyle.fill);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return oldDelegate is! _WidthIndicatorPainter || oldDelegate.width != width || oldDelegate.color != color;
   }
 }

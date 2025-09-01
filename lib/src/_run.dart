@@ -1,8 +1,7 @@
-import 'dart:math';
+import 'dart:math' show max;
 
-import 'package:flutter/rendering.dart';
-
-import '_stretch_wrap_parent_data.dart';
+import 'package:flutter/rendering.dart' show RenderBox, Size;
+import 'package:stretch_wrap/src/_stretch_wrap_parent_data.dart' show StretchWrapParentData;
 
 /// Represents a single run of children within a [RenderStretchWrap].
 class Run {
@@ -44,7 +43,6 @@ class Run {
     sizes[child] = child.size;
     width += child.size.width + (children.length > 1 ? spacing : 0);
     height = max(height, child.size.height);
-    flex += _flex(child, autoStretch);
   }
 
   void updateHeight() {
@@ -52,10 +50,17 @@ class Run {
   }
 
   void updateFlex({required bool autoStretch}) {
-    flex = children.fold(0.0, (totalFlex, child) => totalFlex + _flex(child, autoStretch));
-  }
-
-  double _flex(RenderBox child, bool autoStretch) {
-    return (child.parentData as StretchWrapParentData).flex ?? (autoStretch ? 1.0 : 0.0);
+    final infiniteFlex = children.any((child) => StretchWrapParentData.of(child).flex?.isInfinite == true);
+    double totalFlex = 0.0;
+    for (final child in children) {
+      final parentData = StretchWrapParentData.of(child);
+      if (infiniteFlex) {
+        parentData.flex = parentData.flex?.isInfinite == true ? 1.0 : 0.0;
+      } else {
+        parentData.flex ??= (autoStretch ? 1.0 : 0.0);
+      }
+      totalFlex += parentData.flex ?? 0.0;
+    }
+    flex = totalFlex;
   }
 }

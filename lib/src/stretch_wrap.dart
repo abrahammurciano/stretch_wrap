@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart' show BuildContext, MultiChildRenderObjectWidget, Wrap;
+import 'package:flutter/widgets.dart' show BuildContext, MultiChildRenderObjectWidget, Wrap, WrapCrossAlignment;
 
 import '_render_stretch_wrap.dart' show RenderStretchWrap;
 import 'alignment.dart' show RunAlignment;
@@ -57,6 +57,7 @@ class StretchWrap extends MultiChildRenderObjectWidget {
     this.spacing = 0.0,
     this.runSpacing = 0.0,
     this.alignment = RunAlignment.start,
+    this.crossAxisAlignment = WrapCrossAlignment.center,
     this.autoStretch = AutoStretch.explicit,
   });
 
@@ -69,6 +70,9 @@ class StretchWrap extends MultiChildRenderObjectWidget {
   /// How children should be aligned within their run when there's remaining space and no children are stretched within that run.
   final RunAlignment alignment;
 
+  /// How children within a run should be aligned relative to each other in the cross axis.
+  final WrapCrossAlignment crossAxisAlignment;
+
   /// Which children should automatically be stretched.
   final AutoStretch autoStretch;
 
@@ -78,6 +82,7 @@ class StretchWrap extends MultiChildRenderObjectWidget {
       spacing: spacing,
       runSpacing: runSpacing,
       alignment: alignment,
+      crossAxisAlignment: crossAxisAlignment,
       autoStretch: autoStretch,
     );
   }
@@ -88,6 +93,7 @@ class StretchWrap extends MultiChildRenderObjectWidget {
       ..spacing = spacing
       ..runSpacing = runSpacing
       ..alignment = alignment
+      ..crossAxisAlignment = crossAxisAlignment
       ..autoStretch = autoStretch;
   }
 }

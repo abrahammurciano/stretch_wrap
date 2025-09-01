@@ -1,7 +1,16 @@
-import 'package:flutter/rendering.dart';
+import 'package:flutter/rendering.dart'
+    show
+        BoxConstraints,
+        BoxHitTestResult,
+        ContainerRenderObjectMixin,
+        Offset,
+        PaintingContext,
+        RenderBox,
+        RenderBoxContainerDefaultsMixin,
+        WrapCrossAlignment;
 
-import '_run.dart';
-import '_stretch_wrap_parent_data.dart';
+import '_run.dart' show Run;
+import '_stretch_wrap_parent_data.dart' show StretchWrapParentData;
 import 'alignment.dart' show RunAlignment;
 import 'auto_stretch.dart' show AutoStretch;
 
@@ -25,10 +34,12 @@ class RenderStretchWrap extends RenderBox
     required double spacing,
     required double runSpacing,
     required RunAlignment alignment,
+    required WrapCrossAlignment crossAxisAlignment,
     required AutoStretch autoStretch,
   })  : _spacing = spacing,
         _runSpacing = runSpacing,
         _alignment = alignment,
+        _crossAxisAlignment = crossAxisAlignment,
         _autoStretch = autoStretch;
 
   double _spacing;
@@ -52,6 +63,14 @@ class RenderStretchWrap extends RenderBox
   set alignment(RunAlignment value) {
     if (_alignment == value) return;
     _alignment = value;
+    markNeedsLayout();
+  }
+
+  WrapCrossAlignment _crossAxisAlignment;
+  WrapCrossAlignment get crossAxisAlignment => _crossAxisAlignment;
+  set crossAxisAlignment(WrapCrossAlignment value) {
+    if (_crossAxisAlignment == value) return;
+    _crossAxisAlignment = value;
     markNeedsLayout();
   }
 
@@ -95,19 +114,21 @@ class RenderStretchWrap extends RenderBox
   List<Run> _computeRuns(BoxConstraints constraints) {
     final List<Run> runs = [];
     Run run = Run(maxWidth: constraints.maxWidth, spacing: spacing);
-    for (RenderBox? child = firstChild; child != null; child = _parentData(child).nextSibling) {
+    for (RenderBox? child = firstChild; child != null; child = StretchWrapParentData.of(child).nextSibling) {
       child.layout(BoxConstraints(maxWidth: constraints.maxWidth), parentUsesSize: true);
       if (!run.fits(child)) {
-        runs.add(run);
+        runs.add(
+          run
+            ..updateFlex(
+              autoStretch: autoStretch.shouldStretch(last: StretchWrapParentData.of(child).nextSibling == null),
+            ),
+        );
         run = Run(maxWidth: constraints.maxWidth, spacing: spacing);
       }
       run.add(child, autoStretch: autoStretch != AutoStretch.explicit);
     }
     if (run.children.isNotEmpty) {
-      runs.add(run);
-    }
-    if (autoStretch == AutoStretch.exceptLastRun) {
-      runs.last.updateFlex(autoStretch: false);
+      runs.add(run..updateFlex(autoStretch: autoStretch.shouldStretch(last: true)));
     }
     return runs;
   }
@@ -127,14 +148,13 @@ class RenderStretchWrap extends RenderBox
     final pixelsPerFlex = run.pixelsPerFlex;
     double x = 0.0;
     for (final child in run.children) {
-      final parentData = _parentData(child);
-      final flex = parentData.flex ?? (autoStretch ? 1.0 : 0.0);
+      final parentData = StretchWrapParentData.of(child);
       double width = run.sizes[child]!.width;
-      if (flex > 0) {
-        width += pixelsPerFlex * flex;
+      if ((parentData.flex ?? 0) > 0) {
+        width += pixelsPerFlex * (parentData.flex!);
         child.layout(BoxConstraints.tightFor(width: width), parentUsesSize: true);
       }
-      parentData.offset = Offset(x, y);
+      parentData.offset = Offset(x, y + _crossAxisOffset(child, run.height));
       x += width + spacing;
     }
     run.updateHeight();
@@ -157,10 +177,16 @@ class RenderStretchWrap extends RenderBox
     };
 
     for (final child in run.children) {
-      _parentData(child).offset = Offset(x, y);
+      StretchWrapParentData.of(child).offset = Offset(x, y + _crossAxisOffset(child, run.height));
       x += run.sizes[child]!.width + effectiveSpacing;
     }
   }
 
-  StretchWrapParentData _parentData(RenderBox child) => child.parentData! as StretchWrapParentData;
+  double _crossAxisOffset(RenderBox child, double runHeight) {
+    return switch (crossAxisAlignment) {
+      WrapCrossAlignment.start => 0.0,
+      WrapCrossAlignment.center => (runHeight - child.size.height) / 2,
+      WrapCrossAlignment.end => runHeight - child.size.height,
+    };
+  }
 }

@@ -734,5 +734,242 @@ void main() {
         expect(tester.getTopLeft(items.last), const Offset(230, 0)); // 100 + 120 + 10 spacing
       });
     });
+
+    group('crossAxisAlignment', () {
+      testWidgets('centers children within run height when WrapCrossAlignment.center', (tester) async {
+        await tester.pumpWidget(
+          const WrapContainer(
+            maxWidth: 500,
+            child: StretchWrap(
+              spacing: 10,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: [
+                WrapChild(width: 100, height: 30),
+                WrapChild(width: 100, height: 50),
+                WrapChild(width: 100, height: 20),
+              ],
+            ),
+          ),
+        );
+
+        final items = find.descendant(of: find.byType(StretchWrap), matching: find.byType(WrapChild));
+
+        expect(tester.getTopLeft(items.at(0)), const Offset(0, 10));
+        expect(tester.getTopLeft(items.at(1)), const Offset(110, 0));
+        expect(tester.getTopLeft(items.at(2)), const Offset(220, 15));
+      });
+
+      testWidgets('aligns children to start when WrapCrossAlignment.start', (tester) async {
+        await tester.pumpWidget(
+          const WrapContainer(
+            maxWidth: 500,
+            child: StretchWrap(
+              spacing: 10,
+              crossAxisAlignment: WrapCrossAlignment.start,
+              children: [
+                WrapChild(width: 100, height: 30),
+                WrapChild(width: 100, height: 50),
+                WrapChild(width: 100, height: 20),
+              ],
+            ),
+          ),
+        );
+
+        final items = find.descendant(of: find.byType(StretchWrap), matching: find.byType(WrapChild));
+
+        expect(tester.getTopLeft(items.at(0)), const Offset(0, 0));
+        expect(tester.getTopLeft(items.at(1)), const Offset(110, 0));
+        expect(tester.getTopLeft(items.at(2)), const Offset(220, 0));
+      });
+
+      testWidgets('aligns children to end when WrapCrossAlignment.end', (tester) async {
+        await tester.pumpWidget(
+          const WrapContainer(
+            maxWidth: 500,
+            child: StretchWrap(
+              spacing: 10,
+              crossAxisAlignment: WrapCrossAlignment.end,
+              children: [
+                WrapChild(width: 100, height: 30),
+                WrapChild(width: 100, height: 50),
+                WrapChild(width: 100, height: 20),
+              ],
+            ),
+          ),
+        );
+
+        final items = find.descendant(of: find.byType(StretchWrap), matching: find.byType(WrapChild));
+
+        expect(tester.getTopLeft(items.at(0)), const Offset(0, 20));
+        expect(tester.getTopLeft(items.at(1)), const Offset(110, 0));
+        expect(tester.getTopLeft(items.at(2)), const Offset(220, 30));
+      });
+
+      testWidgets('works with multiple runs and different heights', (tester) async {
+        await tester.pumpWidget(
+          WrapContainer(
+            maxWidth: 250,
+            child: StretchWrap(
+              spacing: 10,
+              runSpacing: 15,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: [
+                WrapChild(width: 100, height: 40),
+                WrapChild(width: 100, height: 60),
+                WrapChild(width: 100, height: 20),
+                WrapChild(width: 100, height: 30),
+              ],
+            ),
+          ),
+        );
+
+        final items = find.descendant(of: find.byType(StretchWrap), matching: find.byType(WrapChild));
+
+        expect(tester.getTopLeft(items.at(0)), const Offset(0, 10));
+        expect(tester.getTopLeft(items.at(1)), const Offset(110, 0));
+        expect(tester.getTopLeft(items.at(2)), const Offset(0, 80));
+        expect(tester.getTopLeft(items.at(3)), const Offset(110, 75));
+      });
+
+      testWidgets('works with stretched children', (tester) async {
+        await tester.pumpWidget(
+          const WrapContainer(
+            maxWidth: 500,
+            child: StretchWrap(
+              spacing: 10,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: [
+                WrapChild(width: 100, height: 30),
+                Stretch(child: WrapChild(width: 0, height: 50)),
+                WrapChild(width: 100, height: 20),
+              ],
+            ),
+          ),
+        );
+
+        final items = find.descendant(of: find.byType(StretchWrap), matching: find.byType(WrapChild));
+        final stretchedChild = find.descendant(of: find.byType(Stretch), matching: find.byType(WrapChild));
+
+        expect(tester.getTopLeft(items.at(0)), const Offset(0, 10));
+        expect(tester.getTopLeft(stretchedChild), const Offset(110, 0));
+        expect(tester.getTopLeft(items.at(2)), const Offset(400, 15));
+      });
+
+      testWidgets('applies crossAxisAlignment with FlexHeightChild', (tester) async {
+        await tester.pumpWidget(
+          const WrapContainer(
+            maxWidth: 500,
+            child: StretchWrap(
+              spacing: 10,
+              crossAxisAlignment: WrapCrossAlignment.end,
+              children: [
+                FlexHeightChild(
+                  desiredWidth: 100,
+                  widthThreshold: 50,
+                  height1: 80,
+                  height2: 40,
+                ),
+                WrapChild(width: 100, height: 60),
+              ],
+            ),
+          ),
+        );
+
+        final flexChild = find.byType(FlexHeightChild);
+        final wrapChild = find.byType(WrapChild);
+
+        expect(tester.getTopLeft(flexChild), const Offset(0, 20));
+        expect(tester.getTopLeft(wrapChild), const Offset(110, 0));
+      });
+    });
+
+    group('infinite flex', () {
+      testWidgets('single infinite flex child takes all remaining space', (tester) async {
+        await tester.pumpWidget(
+          const WrapContainer(
+            maxWidth: 500,
+            child: StretchWrap(
+              spacing: 10,
+              children: [
+                WrapChild(width: 100, height: 50),
+                Stretch(flex: double.infinity, child: WrapChild(width: 0, height: 50)),
+                WrapChild(width: 100, height: 50),
+              ],
+            ),
+          ),
+        );
+
+        final items = find.descendant(of: find.byType(StretchWrap), matching: find.byType(WrapChild));
+        final stretchedChild = find.descendant(of: find.byType(Stretch), matching: find.byType(WrapChild));
+
+        expect(tester.getTopLeft(items.at(0)), const Offset(0, 0));
+        expect(tester.getTopLeft(stretchedChild), const Offset(110, 0));
+        expect(tester.getTopLeft(items.at(2)), const Offset(400, 0));
+
+        final remainingSpace = 500 - 100 - 100 - 20; // 280
+        expect(tester.getSize(stretchedChild).width, remainingSpace);
+      });
+
+      testWidgets('multiple infinite flex children split space evenly', (tester) async {
+        await tester.pumpWidget(
+          const WrapContainer(
+            maxWidth: 600,
+            child: StretchWrap(
+              spacing: 10,
+              children: [
+                WrapChild(width: 100, height: 50),
+                Stretch(flex: double.infinity, child: WrapChild(width: 0, height: 50)),
+                Stretch(flex: double.infinity, child: WrapChild(width: 0, height: 50)),
+                WrapChild(width: 100, height: 50),
+              ],
+            ),
+          ),
+        );
+
+        final stretchedChildren = find.byType(Stretch);
+        final firstStretched = find.descendant(of: stretchedChildren.first, matching: find.byType(WrapChild));
+        final secondStretched = find.descendant(of: stretchedChildren.last, matching: find.byType(WrapChild));
+
+        final remainingSpace = 600 - 100 - 100 - 30; // 370
+        final spacePerChild = remainingSpace / 2; // 185
+
+        expect(tester.getSize(firstStretched).width, spacePerChild);
+        expect(tester.getSize(secondStretched).width, spacePerChild);
+
+        expect(tester.getTopLeft(firstStretched), const Offset(110, 0));
+        expect(tester.getTopLeft(secondStretched), const Offset(305, 0)); // 110 + 185 + 10
+      });
+
+      testWidgets('infinite flex children ignore other stretch children', (tester) async {
+        await tester.pumpWidget(
+          const WrapContainer(
+            maxWidth: 500,
+            child: StretchWrap(
+              spacing: 10,
+              children: [
+                WrapChild(width: 50, height: 50),
+                Stretch(flex: 2, child: WrapChild(width: 100, height: 50)), // Should get no extra space
+                Stretch(flex: double.infinity, child: WrapChild(width: 0, height: 50)),
+                WrapChild(width: 50, height: 50),
+              ],
+            ),
+          ),
+        );
+
+        final stretchedChildren = find.byType(Stretch);
+        final finiteStretched = find.descendant(of: stretchedChildren.first, matching: find.byType(WrapChild));
+        final infiniteStretched = find.descendant(of: stretchedChildren.last, matching: find.byType(WrapChild));
+
+        // The finite flex child should keep its original width (100)
+        expect(tester.getSize(finiteStretched).width, 100);
+
+        // The infinite flex child should get all remaining space
+        final remainingSpace = 500 - 50 - 100 - 50 - 30; // 270
+        expect(tester.getSize(infiniteStretched).width, remainingSpace);
+
+        expect(tester.getTopLeft(finiteStretched), const Offset(60, 0));
+        expect(tester.getTopLeft(infiniteStretched), const Offset(170, 0));
+      });
+    });
   });
 }

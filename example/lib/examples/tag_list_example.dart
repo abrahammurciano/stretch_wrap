@@ -36,26 +36,25 @@ class TagListExample extends StatelessWidget {
     ];
 
     return BlueprintContainer(
-      width: 550,
+      width: 1000,
       child: StretchWrap(
         spacing: 8,
         runSpacing: 8,
+        autoStretch: AutoStretch.all,
+        alignment: RunAlignment.spaceBetween,
         children: [
           for (final tag in tags)
-            Stretch(
-              child: Card(
-                elevation: 6,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(tag),
-                ),
+            Card(
+              elevation: 6,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(tag),
               ),
             ),
-          const Stretch(flex: 100, child: SizedBox.shrink()),
-          TextButton.icon(
+          const Stretch(flex: double.infinity, child: SizedBox.shrink()),
+          FilledButton(
             onPressed: () {},
-            icon: const Icon(Icons.add),
-            label: const Text('Add Tag'),
+            child: const Text('Add Tag'),
           ),
         ],
       ),

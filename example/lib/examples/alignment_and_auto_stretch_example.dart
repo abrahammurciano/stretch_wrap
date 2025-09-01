@@ -18,9 +18,10 @@ class AlignmentAndAutoStretchExample extends StatelessWidget {
           width: 650,
           child: const StretchWrap(
             spacing: 8,
+            runSpacing: 8,
             alignment: RunAlignment.start,
             children: [
-              ColorBox(color: Colors.pink, width: 500, text: '500'),
+              ColorBox(color: Colors.blue, width: 500, text: '500'),
               ColorBox(color: Colors.red, width: 100, text: '100'),
               ColorBox(color: Colors.green, width: 100, text: '100'),
               ColorBox(color: Colors.orange, width: 100, text: '100'),
@@ -34,9 +35,10 @@ class AlignmentAndAutoStretchExample extends StatelessWidget {
           width: 650,
           child: const StretchWrap(
             spacing: 8,
+            runSpacing: 8,
             alignment: RunAlignment.center,
             children: [
-              ColorBox(color: Colors.pink, width: 500, text: '500'),
+              ColorBox(color: Colors.blue, width: 500, text: '500'),
               ColorBox(color: Colors.red, width: 100, text: '100'),
               ColorBox(color: Colors.green, width: 100, text: '100'),
               ColorBox(color: Colors.orange, width: 100, text: '100'),
@@ -50,9 +52,10 @@ class AlignmentAndAutoStretchExample extends StatelessWidget {
           width: 650,
           child: const StretchWrap(
             spacing: 8,
+            runSpacing: 8,
             alignment: RunAlignment.end,
             children: [
-              ColorBox(color: Colors.pink, width: 500, text: '500'),
+              ColorBox(color: Colors.blue, width: 500, text: '500'),
               ColorBox(color: Colors.red, width: 100, text: '100'),
               ColorBox(color: Colors.green, width: 100, text: '100'),
               ColorBox(color: Colors.orange, width: 100, text: '100'),
@@ -66,9 +69,10 @@ class AlignmentAndAutoStretchExample extends StatelessWidget {
           width: 650,
           child: const StretchWrap(
             spacing: 8,
+            runSpacing: 8,
             alignment: RunAlignment.spaceBetween,
             children: [
-              ColorBox(color: Colors.pink, width: 500, text: '500'),
+              ColorBox(color: Colors.blue, width: 500, text: '500'),
               ColorBox(color: Colors.red, width: 100, text: '100'),
               ColorBox(color: Colors.green, width: 100, text: '100'),
               ColorBox(color: Colors.orange, width: 100, text: '100'),
@@ -82,9 +86,10 @@ class AlignmentAndAutoStretchExample extends StatelessWidget {
           width: 650,
           child: const StretchWrap(
             spacing: 8,
+            runSpacing: 8,
             alignment: RunAlignment.spaceAround,
             children: [
-              ColorBox(color: Colors.pink, width: 500, text: '500'),
+              ColorBox(color: Colors.blue, width: 500, text: '500'),
               ColorBox(color: Colors.red, width: 100, text: '100'),
               ColorBox(color: Colors.green, width: 100, text: '100'),
               ColorBox(color: Colors.orange, width: 100, text: '100'),
@@ -95,12 +100,13 @@ class AlignmentAndAutoStretchExample extends StatelessWidget {
         const Text('AutoStretch.explicit (default - only explicit Stretch widgets)'),
         const SizedBox(height: 8),
         BlueprintContainer(
-          width: 450,
+          width: 650,
           child: const StretchWrap(
             spacing: 8,
+            runSpacing: 8,
             autoStretch: AutoStretch.explicit,
             children: [
-              ColorBox(color: Colors.pink, width: 200, text: '200'),
+              ColorBox(color: Colors.green, width: 200, text: '200'),
               ColorBox(color: Colors.red, width: 100, text: '100'),
               Stretch(child: ColorBox(color: Colors.blue, width: 10, text: 'stretch')),
             ],
@@ -110,12 +116,13 @@ class AlignmentAndAutoStretchExample extends StatelessWidget {
         const Text('AutoStretch.all (all children stretch)'),
         const SizedBox(height: 8),
         BlueprintContainer(
-          width: 450,
+          width: 650,
           child: const StretchWrap(
             spacing: 8,
+            runSpacing: 8,
             autoStretch: AutoStretch.all,
             children: [
-              ColorBox(color: Colors.pink, width: 200, text: '200'),
+              ColorBox(color: Colors.blue, width: 200, text: '200'),
               ColorBox(color: Colors.red, width: 100, text: '100'),
               ColorBox(color: Colors.green, width: 50, text: '50'),
             ],
@@ -131,11 +138,10 @@ class AlignmentAndAutoStretchExample extends StatelessWidget {
             runSpacing: 8,
             autoStretch: AutoStretch.exceptLastRun,
             children: [
-              ColorBox(color: Colors.pink, width: 500, text: '500 - stretches'),
+              ColorBox(color: Colors.blue, width: 500, text: '500 - stretches'),
               ColorBox(color: Colors.red, width: 100, text: '100 - stretches'),
-              ColorBox(color: Colors.green, width: 100, text: '100 - stretches'),
-              ColorBox(color: Colors.orange, width: 100, text: '100 - no stretch'),
-              ColorBox(color: Colors.purple, width: 80, text: '80 - no stretch'),
+              ColorBox(color: Colors.green, width: 150, text: '150 - no stretch'),
+              ColorBox(color: Colors.orange, width: 200, text: '200 - no stretch'),
             ],
           ),
         ),
@@ -150,7 +156,7 @@ class AlignmentAndAutoStretchExample extends StatelessWidget {
             alignment: RunAlignment.center,
             autoStretch: AutoStretch.exceptLastRun,
             children: [
-              ColorBox(color: Colors.pink, width: 500, text: '500 - stretches'),
+              ColorBox(color: Colors.blue, width: 500, text: '500 - stretches'),
               ColorBox(color: Colors.red, width: 100, text: '100 - stretches'),
               ColorBox(color: Colors.green, width: 100, text: '100 - stretches'),
               ColorBox(color: Colors.orange, width: 100, text: '100 - centered'),

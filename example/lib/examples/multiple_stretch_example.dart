@@ -10,7 +10,7 @@ class MultipleStretchExample extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlueprintContainer(
-      width: 500,
+      width: 650,
       child: const StretchWrap(
         spacing: 8,
         children: [
