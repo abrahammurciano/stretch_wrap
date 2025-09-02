@@ -21,6 +21,13 @@ import 'cross_run_alignment.dart' show CrossRunAlignment;
 /// - [RunAlignment.spaceBetween]: Distributes children evenly with space between them
 /// - [RunAlignment.spaceAround]: Distributes children evenly with space around them
 ///
+/// The [crossRunAlignment] parameter controls how children within a run are aligned relative
+/// to each other in the cross axis:
+/// - [CrossRunAlignment.start] (default): Aligns children to the top of the run
+/// - [CrossRunAlignment.center]: Centers children vertically within the run
+/// - [CrossRunAlignment.end]: Aligns children to the bottom of the run
+/// - [CrossRunAlignment.stretch]: Stretches children to fill the run's height
+///
 /// The [autoStretch] parameter determines which runs automatically treat their children
 /// as if wrapped in [Stretch]:
 /// - [AutoStretch.explicit] (default): Only explicit [Stretch] widgets are stretched
@@ -58,7 +65,7 @@ class StretchWrap extends MultiChildRenderObjectWidget {
     this.spacing = 0.0,
     this.runSpacing = 0.0,
     this.alignment = RunAlignment.start,
-    this.crossRunAlignment = CrossRunAlignment.center,
+    this.crossRunAlignment = CrossRunAlignment.start,
     this.autoStretch = AutoStretch.explicit,
   });
 
